@@ -2,25 +2,12 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Tap Counter</title>
-  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="styles.css"/>
 </head>
 <body>
-  <div id="tapBox">
-    <span id="tapText">tap anywhere inside this box</span>
-    <div id="counterContainer">
-      <input
-        type="text"
-        id="tapCount"
-        inputmode="numeric"
-        pattern="\d*"
-        autocomplete="off"
-        autocorrect="off"
-        spellcheck="false"
-      />
-    </div>
-  </div>
+  <div id="tap-box" contenteditable="true">tap anywhere inside this box</div>
   <script src="script.js"></script>
 </body>
 </html>
