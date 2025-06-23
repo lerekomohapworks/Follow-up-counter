@@ -1,39 +1,47 @@
-const tapBox = document.getElementById("tap-box");
+const tapCountEl = document.getElementById("tap-count");
+const tapInstruction = document.getElementById("tap-instruction");
 
-// Load saved count or set to 0
+// Load from localStorage or default to 0
 let tapCount = localStorage.getItem("tapCount");
 tapCount = tapCount !== null ? tapCount : "0";
-tapBox.innerText = tapCount;
+tapCountEl.innerText = tapCount;
+toggleInstruction();
 
-// Detect spacebar key press
+// Handle key presses
 document.addEventListener("keydown", (e) => {
-  if (e.code === "Space") {
-    e.preventDefault(); // prevent page scroll
-    if (!tapBox.isContentEditable) return;
+  const current = tapCountEl.innerText;
 
-    let current = tapBox.innerText;
-    // Only increase if it's a number
-    if (!isNaN(current)) {
-      tapCount = (parseInt(current) + 1).toString();
-      tapBox.innerText = tapCount;
-      localStorage.setItem("tapCount", tapCount);
-    }
+  // Ignore input if count box isn't focused or input isn't numeric
+  if (e.code === "Space") {
+    e.preventDefault();
+    tapCount = (parseInt(current || "0") + 1).toString();
+    tapCountEl.innerText = tapCount;
+    localStorage.setItem("tapCount", tapCount);
   } else if (e.code === "Backspace") {
     e.preventDefault();
-    tapBox.innerText = "0";
-    localStorage.setItem("tapCount", "0");
+    tapCount = "0";
+    tapCountEl.innerText = tapCount;
+    localStorage.setItem("tapCount", tapCount);
   } else if (e.key.match(/^[0-9]$/)) {
     e.preventDefault();
-    let current = tapBox.innerText;
     tapCount = current === "0" ? e.key : current + e.key;
-    tapBox.innerText = tapCount;
+    tapCountEl.innerText = tapCount;
     localStorage.setItem("tapCount", tapCount);
   }
+
+  toggleInstruction();
 });
 
-// Save edits if user changes the value directly
-tapBox.addEventListener("input", () => {
-  let newValue = tapBox.innerText.replace(/\D/g, "");
-  tapBox.innerText = newValue || "0";
-  localStorage.setItem("tapCount", tapBox.innerText);
+// Update localStorage when edited manually
+tapCountEl.addEventListener("input", () => {
+  let value = tapCountEl.innerText.replace(/\D/g, ""); // keep digits only
+  if (value === "") value = "0";
+  tapCountEl.innerText = value;
+  localStorage.setItem("tapCount", value);
+  toggleInstruction();
 });
+
+// Hide instruction when count is not empty or 0
+function toggleInstruction() {
+  tapInstruction.style.display = tapCountEl.innerText === "0" ? "block" : "none";
+}
