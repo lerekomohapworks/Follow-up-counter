@@ -1,86 +1,39 @@
-const tapBox = document.getElementById('tapBox');
-const tapInput = document.getElementById('tapCount');
-let tapCount = 0;
-let spacePressed = false;
-let touchStarted = false;
+const tapBox = document.getElementById("tap-box");
 
-function loadTapCount() {
-  const stored = localStorage.getItem('tapCount');
-  return stored !== null ? parseInt(stored, 10) : 0;
-}
+// Load saved count or set to 0
+let tapCount = localStorage.getItem("tapCount");
+tapCount = tapCount !== null ? tapCount : "0";
+tapBox.innerText = tapCount;
 
-function saveTapCount(value) {
-  localStorage.setItem('tapCount', value);
-}
+// Detect spacebar key press
+document.addEventListener("keydown", (e) => {
+  if (e.code === "Space") {
+    e.preventDefault(); // prevent page scroll
+    if (!tapBox.isContentEditable) return;
 
-function updateDisplay() {
-  tapInput.value = tapCount.toString();
-}
-
-// Increase tap ONLY if tap wasn't on the input
-tapBox.addEventListener('click', (e) => {
-  if (e.target !== tapInput) {
-    tapInput.blur(); // hide keyboard on mobile
-    tapCount++;
-    saveTapCount(tapCount);
-    updateDisplay();
-  }
-});
-
-// Handle spacebar on desktop
-document.addEventListener('keydown', (e) => {
-  if (e.code === 'Space' && !spacePressed) {
-    e.preventDefault();
-    spacePressed = true;
-    tapCount++;
-    saveTapCount(tapCount);
-    updateDisplay();
-  }
-});
-
-document.addEventListener('keyup', (e) => {
-  if (e.code === 'Space') {
-    spacePressed = false;
-  }
-});
-
-// Touch-only tap counter logic
-tapBox.addEventListener('touchstart', (e) => {
-  if (e.target !== tapInput && !touchStarted) {
-    touchStarted = true;
-    tapInput.blur(); // hide keyboard
-    tapCount++;
-    saveTapCount(tapCount);
-    updateDisplay();
-  }
-});
-
-tapBox.addEventListener('touchend', () => {
-  touchStarted = false;
-});
-
-// Allow backspace + manual input
-tapInput.addEventListener('keydown', (e) => {
-  if (e.key === 'Backspace') {
-    e.preventDefault();
-    if (tapInput.value.length <= 1) {
-      tapCount = 0;
-    } else {
-      tapCount = parseInt(tapInput.value.slice(0, -1), 10);
+    let current = tapBox.innerText;
+    // Only increase if it's a number
+    if (!isNaN(current)) {
+      tapCount = (parseInt(current) + 1).toString();
+      tapBox.innerText = tapCount;
+      localStorage.setItem("tapCount", tapCount);
     }
-    saveTapCount(tapCount);
-    updateDisplay();
-  } else if (!isNaN(e.key) && e.key !== ' ') {
+  } else if (e.code === "Backspace") {
     e.preventDefault();
-    const current = tapInput.value === "0" ? "" : tapInput.value;
-    tapCount = parseInt(current + e.key, 10);
-    saveTapCount(tapCount);
-    updateDisplay();
+    tapBox.innerText = "0";
+    localStorage.setItem("tapCount", "0");
+  } else if (e.key.match(/^[0-9]$/)) {
+    e.preventDefault();
+    let current = tapBox.innerText;
+    tapCount = current === "0" ? e.key : current + e.key;
+    tapBox.innerText = tapCount;
+    localStorage.setItem("tapCount", tapCount);
   }
 });
 
-// Init
-window.addEventListener('load', () => {
-  tapCount = loadTapCount();
-  updateDisplay();
+// Save edits if user changes the value directly
+tapBox.addEventListener("input", () => {
+  let newValue = tapBox.innerText.replace(/\D/g, "");
+  tapBox.innerText = newValue || "0";
+  localStorage.setItem("tapCount", tapBox.innerText);
 });
