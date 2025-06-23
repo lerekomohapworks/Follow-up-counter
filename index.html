@@ -8,8 +8,16 @@
 </head>
 <body>
   <div id="tapBox" tabindex="0">
-    <span id="tapText">tap anywhere inside this box</span>
-    <input type="text" id="tapCount" />
+    <div id="tapText">tap anywhere inside this box</div>
+    <input
+      type="text"
+      id="tapCount"
+      inputmode="numeric"
+      pattern="\d*"
+      autocomplete="off"
+      autocorrect="off"
+      spellcheck="false"
+    />
   </div>
   <script src="script.js"></script>
 </body>
