@@ -3,7 +3,7 @@ const tapInput = document.getElementById('tapCount');
 
 let tapCount = 0;
 let spacePressed = false;
-let touchActive = false;
+let touchStarted = false;
 
 // Load from localStorage
 function loadTapCount() {
@@ -23,10 +23,10 @@ function updateDisplay() {
 
 // Prevent mouse from acting as a tap
 tapBox.addEventListener('mousedown', (e) => {
-  e.preventDefault();
+  e.preventDefault(); // ignore mouse clicks / touchpad
 });
 
-// Tap using spacebar (once per press)
+// Tap via spacebar: only register one tap per full press
 document.addEventListener('keydown', (e) => {
   if (e.code === 'Space' && !spacePressed) {
     e.preventDefault();
@@ -43,11 +43,11 @@ document.addEventListener('keyup', (e) => {
   }
 });
 
-// Tap using touch (only one per long press)
+// Tap via touch: only count once per touch cycle
 tapBox.addEventListener('touchstart', (e) => {
   e.preventDefault();
-  if (!touchActive) {
-    touchActive = true;
+  if (!touchStarted) {
+    touchStarted = true;
     tapCount++;
     saveTapCount(tapCount);
     updateDisplay();
@@ -55,15 +55,15 @@ tapBox.addEventListener('touchstart', (e) => {
 });
 
 tapBox.addEventListener('touchend', () => {
-  touchActive = false;
+  touchStarted = false;
 });
 
-// Focus input when clicking anywhere inside
+// Focus the input when the user clicks/taps
 tapBox.addEventListener('click', () => {
   tapInput.focus();
 });
 
-// Allow editing the tap value with constraints
+// Manual counter editing + backspace & leading-zero behavior
 tapInput.addEventListener('keydown', (e) => {
   if (e.key === 'Backspace') {
     e.preventDefault();
@@ -83,7 +83,7 @@ tapInput.addEventListener('keydown', (e) => {
   }
 });
 
-// Initialize
+// Initialize app
 window.addEventListener('load', () => {
   tapCount = loadTapCount();
   updateDisplay();
