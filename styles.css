@@ -1,39 +1,53 @@
+/* Set up full-screen layout with center alignment */
 body {
   margin: 0;
   padding: 0;
-  background: #121212;
+  height: 100vh;
+  background-color: #121212;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   color: white;
-  font-family: Arial, sans-serif;
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 100vh;
 }
 
+/* Main tap box container */
 #tap-box {
-  width: 80%;
-  height: 80%;
+  width: 90%;
+  height: 90%;
+  max-width: 800px;
+  max-height: 600px;
   border: 3px dashed #00ffcc;
+  border-radius: 12px;
+  padding: 40px;
+  box-sizing: border-box;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   cursor: pointer;
   user-select: none;
+  background-color: #1e1e1e;
 }
 
+/* Instruction text above the count */
 #tap-instruction {
   font-size: 1.5rem;
-  margin-bottom: 20px;
-  opacity: 0.6;
+  margin-bottom: 30px;
+  opacity: 0.7;
+  text-align: center;
 }
 
+/* Tap counter display */
 #tap-count {
   font-size: 6rem;
+  font-weight: bold;
   outline: none;
   text-align: center;
-  width: 200px;
+  width: 100%;
+  max-width: 300px;
   border: none;
   background: transparent;
   color: white;
+  caret-color: #00ffcc;
 }
