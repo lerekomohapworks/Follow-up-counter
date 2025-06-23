@@ -1,4 +1,3 @@
-/* Reset & base layout */
 body {
   margin: 0;
   padding: 0;
@@ -11,65 +10,52 @@ body {
   background-color: #f9f9f9;
 }
 
-/* Main tap area */
 #tapBox {
+  width: 90vw;
+  height: 85vh;
+  border: 4px dashed #555;
+  border-radius: 12px;
+  background-color: #fff;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  border: 4px dashed #555;
-  border-radius: 12px;
-  background-color: #fff;
-  width: 90vw;
-  height: 85vh;
   padding: 20px;
   box-sizing: border-box;
-  outline: none;
-  cursor: pointer;
-  transition: background-color 0.2s ease;
+  position: relative;
 }
 
-/* Instruction text */
 #tapText {
-  font-size: 1.5rem;
+  font-size: 1.4rem;
   color: #666;
-  margin-bottom: 24px;
+  margin-bottom: 20px;
   text-align: center;
 }
 
-/* Editable counter */
+#counterContainer {
+  border: 2px solid #888;
+  border-radius: 8px;
+  padding: 10px 20px;
+  background-color: #eee;
+}
+
 #tapCount {
-  font-size: 4rem;
+  font-size: 3rem;
   text-align: center;
-  width: 100%;
-  max-width: 300px;
   border: none;
   background: none;
   outline: none;
-  padding: 10px;
-  border-bottom: 2px solid #ccc;
-  transition: border-color 0.2s ease;
+  width: 100%;
+  min-width: 120px;
 }
 
-#tapCount:focus {
-  border-color: #000;
-}
-
-/* Mobile adjustments */
+/* Responsive adjustments */
 @media (max-width: 600px) {
-  #tapBox {
-    width: 95vw;
-    height: 90vh;
-    padding: 15px;
-  }
-
   #tapText {
-    font-size: 1.2rem;
-    margin-bottom: 20px;
+    font-size: 1.1rem;
   }
 
   #tapCount {
-    font-size: 3rem;
-    max-width: 90%;
+    font-size: 2.5rem;
   }
 }
